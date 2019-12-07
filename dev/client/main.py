@@ -1,7 +1,7 @@
+""" """
 
 import tkinter as tk
 
-import ui.client as c
 import ui.entry as e
 
 def main():
