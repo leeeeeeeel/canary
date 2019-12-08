@@ -12,6 +12,8 @@ class Root(tk.Tk):
         self.initUI()
 
     def initUI(self):
+        self.geometry("%dx%d+0+0" % (900, 600))
+
         self.f_current = e.Entry(parent=self, controller=self)
         self.f_current.pack(fill="both", expand=True)
 

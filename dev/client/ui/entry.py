@@ -15,10 +15,15 @@ class Entry(tk.Frame):
         self.initUI()
 
     def initUI(self):
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(2, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(2, weight=1)
+
         f_sign = tk.Frame(self)
-        f_sign.pack(fill="both", expand=True)
-        f_sign.grid_rowconfigure(0, weight=1)
-        f_sign.grid_columnconfigure(0, weight=1)
+        f_sign.columnconfigure(0, weight=1)
+        f_sign.rowconfigure(0, weight=1)
+        f_sign.grid(sticky=tk.E+tk.W+tk.S+tk.N, row=1, column=1)
 
         self.f_signup = SignUp(parent=f_sign, controller=self)
         self.f_signin = SignIn(parent=f_sign, controller=self)
