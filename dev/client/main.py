@@ -2,12 +2,11 @@
 
 import tkinter as tk
 
-import ui.entry as e
+import ui.root as r
 
 def main():
-    window = tk.Tk()
-    app = e.Entry(window)
-    window.mainloop()
+    root = r.Root()
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
