@@ -2,8 +2,8 @@
 
 import tkinter as tk
 
-import ui.entry as e
-import ui.app as a
+import ui.app.entry as e
+import ui.app.main as m
 
 class Root(tk.Tk):
 
