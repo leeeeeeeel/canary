@@ -17,16 +17,6 @@ class SignIn(tk.Frame):
         self.configure()
 
         f_components = tk.Frame(self)
-        f_components.rowconfigure(0, pad=10)
-        f_components.rowconfigure(1, pad=10)
-        f_components.rowconfigure(2, pad=10)
-        f_components.rowconfigure(3, pad=10)
-        f_components.rowconfigure(4, pad=10)
-        f_components.rowconfigure(5, pad=10)
-        f_components.rowconfigure(6, pad=10)
-        f_components.rowconfigure(7, pad=10)
-        f_components.rowconfigure(8, pad=10)
-        f_components.rowconfigure(9, pad=10)
         f_components.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
 
         l_email = tk.Label(
@@ -83,15 +73,15 @@ class SignIn(tk.Frame):
         l_have_account.bind(
             "<Button-1>", self.l_have_account_click)
 
-        l_email.grid(row=0, column=0)
+        l_email.grid(row=0, column=0, sticky="w")
         self.e_email.grid(row=1, column=0)
-        l_username.grid(row=2, column=0)
+        l_username.grid(row=2, column=0, sticky="w", pady=(10, 0))
         self.e_username.grid(row=3, column=0)
-        l_password.grid(row=4, column=0)
+        l_password.grid(row=4, column=0, sticky="w", pady=(10, 0))
         self.e_password.grid(row=5, column=0)
-        l_confirm_password.grid(row=6, column=0)
+        l_confirm_password.grid(row=6, column=0, sticky="w", pady=(10, 0))
         self.e_confirm_password.grid(row=7, column=0)
-        b_signin.grid(row=8, column=0)
+        b_signin.grid(row=8, column=0, pady=10)
         l_have_account.grid(row=9, column=0)
 
     def b_signin_click(self):

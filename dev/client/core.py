@@ -2,6 +2,7 @@
 
 import tkinter as tk
 
+import net.client as c
 import ui.root as r
 
 def main():

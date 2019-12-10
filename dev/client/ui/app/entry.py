@@ -3,8 +3,8 @@
 import tkinter as tk
 
 import help as h
-import ui.app.sign_in as si
-import ui.app.sign_up as su
+import ui.app.entry_signin as si
+import ui.app.entry_signup as su
 
 class Entry(tk.Frame):
 
@@ -36,7 +36,7 @@ class Entry(tk.Frame):
 
         self.show_frame("sign-up")
 
-    def sign_in(self, email, username, password, confirm_password):
+    def signin(self, email, username, password, confirm_password):
         valid = True
 
         if not h.EMAIL_REGEX.match(email):
@@ -53,9 +53,9 @@ class Entry(tk.Frame):
             valid = False
 
         if valid:
-            print(email, username, password, confirm_password)
+            self.controller.signin(email, username, password)
 
-    def sign_up(self, email, password):
+    def signup(self, email, password):
         valid = True
 
         if not h.EMAIL_REGEX.match(email):
@@ -66,7 +66,7 @@ class Entry(tk.Frame):
             valid = False
 
         if valid:
-            print(email, password)
+            self.controller.signup(email, password)
 
     def show_frame(self, frame):
         if frame =="sign-in":

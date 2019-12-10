@@ -17,6 +17,14 @@ class Root(tk.Tk):
         self.f_current = e.Entry(parent=self, controller=self)
         self.f_current.pack(fill="both", expand=True)
 
+    def sign_in(email, username, password):
+        # TODO
+        pass
+
+    def sign_up(email, password):
+        # TODO
+        pass
+
     def start_session(self, token):
         # TODO
         pass

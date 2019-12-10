@@ -17,12 +17,6 @@ class SignUp(tk.Frame):
         self.configure()
 
         f_components = tk.Frame(self)
-        f_components.rowconfigure(0, pad=10)
-        f_components.rowconfigure(1, pad=10)
-        f_components.rowconfigure(2, pad=10)
-        f_components.rowconfigure(3, pad=10)
-        f_components.rowconfigure(4, pad=10)
-        f_components.rowconfigure(5, pad=10)
         f_components.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
 
         l_email = tk.Label(
@@ -67,16 +61,17 @@ class SignUp(tk.Frame):
         l_create_account.bind(
             "<Button-1>", self.l_create_account_click)
 
-        l_email.grid(row=0, column=0)
+        l_email.grid(row=0, column=0, sticky="w")
         self.e_email.grid(row=1, column=0, columnspan=2)
-        l_password.grid(row=2, column=0)
-        l_forgot_password.grid(row=2, column=1)
+        l_password.grid(row=2, column=0, sticky="w", pady=(10, 0))
+        l_forgot_password.grid(row=2, column=1, sticky="e", pady=(10, 0))
         self.e_password.grid(row=3, column=0, columnspan=2)
-        b_signup.grid(row=4, column=0, columnspan=2)
+        b_signup.grid(row=4, column=0, columnspan=2, pady=10)
         l_create_account.grid(row=5, column=0, columnspan=2)
 
     def l_forgot_password_click(self, event=None):
-        # TODO
+        # TODO:
+        #   send mail to given email requesting to change password
         pass
 
     def b_signup_click(self, event=None):
