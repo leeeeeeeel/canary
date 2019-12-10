@@ -71,7 +71,7 @@ class SignUp(tk.Frame):
 
     def l_forgot_password_click(self, event=None):
         # TODO:
-        #   send mail to given email requesting to change password
+        #   send mail to given email requesting to change password]
         pass
 
     def b_signup_click(self, event=None):
