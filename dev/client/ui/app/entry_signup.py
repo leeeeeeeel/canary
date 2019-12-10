@@ -70,8 +70,7 @@ class SignUp(tk.Frame):
         l_create_account.grid(row=5, column=0, columnspan=2)
 
     def l_forgot_password_click(self, event=None):
-        # TODO:
-        #   send mail to given email requesting to change password]
+        # TODO
         pass
 
     def b_signup_click(self, event=None):
