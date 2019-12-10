@@ -12,7 +12,7 @@ class Root(tk.Tk):
         self.client = client
 
         self.initUI()
-
+ 
     def initUI(self):
         self.geometry("%dx%d+0+0" % (900, 600))
 
