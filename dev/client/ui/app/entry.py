@@ -68,8 +68,8 @@ class Entry(tk.Frame):
         if valid:
             self.controller.signup(email, password)
 
-    def show_frame(self, frame):
-        if frame =="sign-in":
+    def show_frame(self, frame_name):
+        if frame_name =="sign-in":
             self.f_signin.tkraise()
-        if frame == "sign-up":
+        if frame_name == "sign-up":
             self.f_signup.tkraise()
