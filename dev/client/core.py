@@ -6,7 +6,8 @@ import net.client as c
 import ui.root as r
 
 def main():
-    root = r.Root()
+    client = c.Client()
+    root = r.Root(client)
     root.mainloop()
 
 if __name__ == "__main__":

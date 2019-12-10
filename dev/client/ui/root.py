@@ -7,8 +7,10 @@ import ui.app.main as m
 
 class Root(tk.Tk):
 
-    def __init__(self):
+    def __init__(self, client):
         tk.Tk.__init__(self)
+        self.client = client
+
         self.initUI()
 
     def initUI(self):
