@@ -1,7 +1,10 @@
 """ Canary server """
 
+import net.server as s
+
 def main():
-    pass
+    server = s.Server()
+    server.listen()
 
 if __nane__ == "__main__":
     main()
