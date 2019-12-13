@@ -1,36 +1,58 @@
+""" """
+
 import socket as s
+import threading as t
+
+import net.handler as h
 
 class Server:
 
     BUFFER_SIZE = 1024
+    PORT = 4242
 
-    def __init__():
-        pass
+    clients = []
+    threads = []
 
-    def start(self, ip="localhost", port=8080):
-        self.running = True
-        self.address = (ip, port)
-        self.sock = s.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self):
+        self.address = ("localhost", self.PORT)
+
+        self.sock = s.socket(s.AF_INET, s.SOCK_STREAM)
         self.sock.bind(self.address)
+        self.sock.listen(True)
 
-        print ("started up on %s port %s" % self.address)
-
-        self.listen()
+        print ("started up on %s port %s." % self.address)
+        self.running = True
 
     def shut(self):
         self.running = False
+
+        s.socket(s.AF_INET,
+                  s.SOCK_STREAM).connect(self.address)
+
         self.sock.close()
 
-        print ("shutted down.")
+        for t in self.threads:
+            t.join()
 
-    def listen():
-        sock.listen(True)
+        print ("shuted down.")
 
-        print ("listening for connections..."")
+    def listen_async(self):
+        newthread = t.Thread(target=self.listen)
+        newthread.start()
+        self.threads.append(newthread)
+
+    def listen(self):
+        print ("listening for connections...")
         while self.running:
-            connection, client_address = sock.accept()
+            try:
+                conn, addr = self.sock.accept()
 
-            handler = connection_handler(self, connection, client_address)
-            handler.handle_async()
-
-            connection.close()
+                newhandler = h.ConnectionHandler(
+                    controller=self,
+                    connection=conn,
+                    client_address=addr)
+                newhandler.start()
+                self.threads.append(newhandler)
+            except (OSError):
+                pass
+        print("terminated listening.")
