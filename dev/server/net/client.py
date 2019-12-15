@@ -17,6 +17,9 @@ class Client:
             client=self)
         self.handler.start()
 
+    def reconnect(self):
+        pass
+
     def disconnect(self, join=False):
         if not self.connected:
             return
@@ -29,6 +32,3 @@ class Client:
             self.handler.join()
 
         print("%s disconnected" % self.username)
-
-    def reconnect(self):
-        pass

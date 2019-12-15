@@ -20,6 +20,9 @@ class Client:
 
         self.connected = True
 
+    def reconnect(self):
+        pass
+
     def disconnect(self, join=False):
         if not self.connected:
             return
