@@ -1,27 +1,70 @@
 """ """
 
-import threading as t
+import pickle
+import threading
 
-import net.server as s
+from net.msg import msg
+from net.msg.authentication import *
 
-class ConnectionHandler(t.Thread):
+class ClientHandler(threading.Thread):
 
-    def __init__(self, controller, connection, client_address):
-        super(ConnectionHandler, self).__init__()
-        self.controller = controller
-        self.connection = connection
-        self.client_address = client_address
+    def __init__(self, server, client):
+        super(ClientHandler, self).__init__(
+            name="%s_thread" % client.username)
+
+        self.server = server
+        self.client = client
 
     def run(self):
-        print("connection from %s:%d" % self.client_address)
+        self.listen()
 
-        data = self.connection.recv(self.controller.BUFFER_SIZE).decode()
+    def listen(self):
+        try:
+            while self.client.connected:
+                data = self.client.connection.recv(self.server.BUFFER_SIZE)
 
-        if data:
-            self.handle(data)
+                if data:
+                    message = pickle.loads(data)
+                    self.handle(message)
+        except (ConnectionAbortedError, ConnectionResetError) as e:
+            # disconnection from either sides
+            pass
+        except Exception as e:
+            print("exception: '%s' in %s's connection, terminating connection"
+                % (e, self.client.username))
 
-        self.connection.close()
-        print("finished %s:%d connection" % self.client_address)
+        self.client.disconnect()
 
-    def handle(self, data):
-        print(data)
+    def send(self, message):
+        data = pickle.dumps(message, pickle.HIGHEST_PROTOCOL)
+        self.client.connection.sendall(data)
+        print("sent %d bytes to %s" % (len(data), self.client.username))
+
+    def handle(self, message):
+        print("message received from %s" % self.client.username)
+
+        if not isinstance(message, msg.MsgRoot):
+            raise RuntimeError(
+                "invalid message from %s" % self.client.username)
+
+        if message.messageType == msg.NONE:
+            self.none_msg(message)
+        elif message.messageType == msg.SIGN_IN:
+            self.signin_msg(message)
+        elif message.messageType == msg.SIGN_UP:
+            self.signon_msg(message)
+
+        print("finished handle of %s's message" % self.client.username)
+
+    # message handlers
+    def none_msg(self, message):
+        print("none")
+        self.send(msg.MsgRoot())
+
+    def signin_msg(self, message):
+        print("sign_in")
+        self.send(msg_on_signin.MsgOnSignIn())
+
+    def signon_msg(self, message):
+        print("sign_on")
+        self.send(msg_on_signon.MsgOnSignOn())

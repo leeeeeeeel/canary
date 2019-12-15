@@ -1,58 +1,68 @@
 """ """
 
-import socket as s
-import threading as t
+import socket
+import threading
 
-import net.handler as h
+import help
+from net import client
 
 class Server:
 
     BUFFER_SIZE = 1024
-    PORT = 4242
-
-    clients = []
-    threads = []
+    ADDRESS = ("127.0.0.1", 4242)
 
     def __init__(self):
-        self.address = ("localhost", self.PORT)
-
-        self.sock = s.socket(s.AF_INET, s.SOCK_STREAM)
-        self.sock.bind(self.address)
+        self.sock = socket.socket(socket.AF_INET,
+                                  socket.SOCK_STREAM)
+        self.sock.bind(self.ADDRESS)
         self.sock.listen(True)
 
-        print ("started up on %s port %s." % self.address)
+        self.al_thread = False
+
+        self.clients = []
+
+        print("started up on %s port %s." % self.ADDRESS)
         self.running = True
 
     def shut(self):
         self.running = False
 
-        s.socket(s.AF_INET,
-                  s.SOCK_STREAM).connect(self.address)
+        # free self.sock from accept()
+        socket.socket(socket.AF_INET,
+                 socket.SOCK_STREAM).connect(self.ADDRESS)
+
+        if self.al_thread:
+            self.al_thread.join()
 
         self.sock.close()
 
-        for t in self.threads:
-            t.join()
+        for c in self.clients:
+            c.disconnect(join=True)
 
-        print ("shuted down.")
+        print("shutted down.")
 
     def listen_async(self):
-        newthread = t.Thread(target=self.listen)
-        newthread.start()
-        self.threads.append(newthread)
+        self.al_thread = threading.Thread(
+            target=self.listen,
+            name="listen_thread")
+        self.al_thread.start()
 
     def listen(self):
-        print ("listening for connections...")
-        while self.running:
-            try:
-                conn, addr = self.sock.accept()
+        print("listening for connections...")
 
-                newhandler = h.ConnectionHandler(
-                    controller=self,
-                    connection=conn,
-                    client_address=addr)
-                newhandler.start()
-                self.threads.append(newhandler)
-            except (OSError):
-                pass
-        print("terminated listening.")
+        while self.running:
+            conn, addr = self.sock.accept()
+            name = help.anon_username()
+
+            print("received connection from %s:%d as %s"
+                % (addr[0], addr[1], name))
+
+            newclient = client.Client(
+                server = self,
+                connection=conn,
+                address=addr,
+                username=name)
+
+            self.clients.append(newclient)
+
+        print("terminated listening for connections.")
