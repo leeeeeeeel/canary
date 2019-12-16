@@ -1,13 +1,17 @@
+""" """
 
+import get_history
 
 def suggest(spotify_username='',
             deezer_username='',
-            googleplay_username='',
-            itunes_username=''):
+            googleplay_username=''):
 
-    print(spotify_username)
-    print(deezer_username)
-    print(googleplay_username)
-    print(itunes_username)
+    history = []
+    history.append(get_history.spotify(spotify_username))
+    history.append(get_history.deezer(deezer_username))
+    history.append(get_history.googleplay(googleplay_username))
 
-    return 'cu'
+    return create_playlist(history)
+
+def create_playlist(history):
+    pass
