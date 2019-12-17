@@ -1,31 +1,30 @@
-""" """
+""" Api responsable for handling applications requests for music suggestion """
 
-from flask import Flask, request
-from flask_restful import Resource, Api, reqparse
-from json import dumps
+from flask import Flask, request, abort
+from flask_restful import Resource, Api
+import voluptuous as v
 
 import canary
 
 app = Flask("canary")
 api = Api(app)
 
-parser = reqparse.RequestParser()
-parser.add_argument('spotify', default='')
-parser.add_argument('deezer', default='')
-parser.add_argument('google-play', default='')
-
 class Canary(Resource):
-    def get(self):
+    def post(self):
+        history = request.json.get('history')
 
-        args = parser.parse_args()
-        spotify = args['spotify']
-        deezer = args['deezer']
-        googleplay = args['google-play']
+        try:
+            schema = v.Schema(v.All([{
+                v.Required('music_id'): v.All(str, v.Length(min=5, max=15)),
+                v.Required('relevance'): v.All(float, v.Range(min=0, max=1))
+                }], v.Length(min=1)))
 
-        return canary.suggest(
-            spotify_username=spotify,
-            deezer_username=deezer,
-            googleplay_username=googleplay)
+            schema(history)
+        except v.MultipleInvalid as e:
+            # history data doesn't match requisitions
+            abort(400)
+
+        return canary.suggest(history), 200
 
 api.add_resource(Canary, '/')
 
